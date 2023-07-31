@@ -1,0 +1,2 @@
+React:
+rcc 或是rfc Enter就可以馬上建立React Component模板

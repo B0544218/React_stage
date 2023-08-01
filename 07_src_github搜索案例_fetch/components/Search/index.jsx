@@ -5,7 +5,7 @@ import PubSub from 'pubsub-js'
 export default class Search extends Component {
 
 	search = async()=>{
-		//获取用户的输入(连续解构赋值+重命名)
+		
 		const {keyWordElement:{value:keyWord}} = this
 		//发送请求前通知List更新状态
 		PubSub.publish('atguigu',{isFirst:false,isLoading:true})
@@ -23,14 +23,20 @@ export default class Search extends Component {
 		//#endregion
 			
 		//发送网络请求---使用fetch发送（未优化）
+		// 聯繫服務器成功(fetch的功能，axios沒有)，跟是否執行成功的狀態碼毫無相關，聯繫 就是指能不能和服務器建立對話
 		/* fetch(`/api1/search/users2?q=${keyWord}`).then(
 			response => {
 				console.log('联系服务器成功了');
+				// 記住這邊的response.json()是一個Promise實例對象
 				return response.json()
 			},
 			error => {
 				console.log('联系服务器失败了',error);
-				return new Promise(()=>{})
+				return new Promise(()=>{})   // promise狀態為錯誤，因此不會往下個then執行
+
+				!!!另外舉個例子，如果進入這個失敗的程式區塊，且又是非promise值，如下:
+				error => {console.log('联系服务器失败了',error)  }
+				這樣會發生這個then內所返回的promise狀態會是成功的!!!，此時會發現會往下執行console.log('获取数据成功了',response)
 			}
 		).then(
 			response => {console.log('获取数据成功了',response);},

@@ -1,0 +1,16 @@
+[這裡不進行多說明]
+為了要修改webpack
+因此要把webpack的位置暴露出來，但是暴露出就回不去了
+npm eject
+可以暴露出config和scripts
+
+[這裡不進行多說明]
+另外，可以不用暴露就可以改 (對默認配置進行自定義)
+在根目錄下創建config-overrides.js
+'''
+// 配置具體的修改規則
+module.exports = function override(config, env){
+	return config;
+}
+'''
+接著執行react-app-rewired OOXX

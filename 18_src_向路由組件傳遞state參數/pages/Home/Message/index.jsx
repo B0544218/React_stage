@@ -23,7 +23,12 @@ export default class Message extends Component {
 								<li key={msgObj.id}>
 									{/* 向路由组件传递params参数 */}
 									{/* param */}
-									<Link to={`detail/${msgObj.id}/${msgObj.title}`}>{msgObj.title}</Link>
+									{/* <Link to={`detail/${msgObj.id}/${msgObj.title}`}>{msgObj.title}</Link> */}
+									{/* search */}
+									{/* <Link to={`detail/?id=${msgObj.id}&title=${msgObj.title}`}>{msgObj.title}</Link> */}
+									{/* state */}
+									{/* state是放在react前端路由裡面，跟component內的state不一樣 */}
+									<Link to={`detail`} state={{id:msgObj.id, title:msgObj.title}}>{msgObj.title}</Link>
 								</li>
 							)
 						})
@@ -32,8 +37,8 @@ export default class Message extends Component {
 				<hr/>
 				{/* 声明接收params参数 */}
 				<Routes>
-					{/* <Route path="/home/message/detail/:id/:title" element={<Detail />}/> */}
-					<Route path="detail/:id/:title" element={<Detail />}/>
+					{/* <Route path="detail/:id/:title" element={<Detail />}/> */}
+					<Route path="detail" element={<Detail />}/>
 				</Routes>
 			</div>
 		)

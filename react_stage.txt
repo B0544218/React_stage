@@ -1,0 +1,37 @@
+第2:
+React component會從/src/App.js傳到/src/index.js再透過ReactDOM.render(,document.getElementById)傳到/public/index.js
+第3:
+可以在React class中定義變數、箭頭函數，然後在render中透過props來傳遞給component，另外，有些情況像是
+想要將其他 子component中的數據進行操作，這時就要將先在自己的state中設定初始值，然後自己的方法透過props傳遞 子component，並在 子component中使用this.props.xxx()來進行數據的操作更新
+
+透過props來傳遞函數時，會寫成 <Component func1_name={this.func1} />
+在Component中使用別人傳遞過來的func，會寫成this.props.func1
+在Component中使用事件控制，一定都要寫成柯里化、高階函數的形式，return 回調函數
+
+第4:
+setproxy就是幫我們轉發
+app.use(
+      '/students',
+      createProxyMiddleware({
+        target:'http://localhost:5000',
+        changeOrigin:true,
+      })
+    );
+這段意思指 當請求符合 /students/* 就會幫我們將 request 轉發到 targe URL，target URL為要找哪個伺服器轉發請求，pathRewrite 則是可以將指定的 path 替換掉(第5中會提到)，在第4的專案中，我們還沒有用nodeJS寫target url的server
+
+第5:
+
+module.exports = function(app){
+	app.use('/api1',
+	createProxyMiddleware({ //遇见/api1前缀的请求，就会触发该代理配置
+			target:'http://localhost:5000', //请求转发给谁
+			changeOrigin:true,//控制服务器收到的请求头中Host的值
+			pathRewrite:{'^/api1':''}//重寫請求路徑
+		})
+	)
+}
+這段意思是當請求符合 /api1/*就會幫我們將 request 轉發到 targe URL，如以下NodeJS 所寫的
+app.listen(5000, "localhost", (err) => {})
+接著如果請求長這樣 axios.get(`/api1/search/users?q=${keyWord}`).then()，首先經過proxy會先把'^/api1'改成空字串，
+因此請求到NodeJS中會長成`search/users?q=${keyWord}`，這時又對應NodeJS裡的API如下:
+app.get("/search/users", function (req, res) {})，因此React經過Proxy後會使用到此API

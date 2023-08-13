@@ -8,6 +8,10 @@ React component會從/src/App.js傳到/src/index.js再透過ReactDOM.render(,doc
 在Component中使用別人傳遞過來的func，會寫成this.props.func1
 在Component中使用事件控制，一定都要寫成柯里化、高階函數的形式，return 回調函數
 
+p.s. onClick={func1} //注意 這裡不用括號，如果這裡加上括號會直接執行，因為在Js中 需要呼叫function就是直接寫function + 括號
+那如果我們想要在這個地方加入parameter給func1，就要寫成:
+ocClick={ () => { func1("Taipei City") }}
+
 第4:
 setproxy就是幫我們轉發
 app.use(
@@ -35,3 +39,52 @@ app.listen(5000, "localhost", (err) => {})
 接著如果請求長這樣 axios.get(`/api1/search/users?q=${keyWord}`).then()，首先經過proxy會先把'^/api1'改成空字串，
 因此請求到NodeJS中會長成`search/users?q=${keyWord}`，這時又對應NodeJS裡的API如下:
 app.get("/search/users", function (req, res) {})，因此React經過Proxy後會使用到此API
+
+
+第6:  import PubSub from 'pubsub-js'
+//發送請求前通知List更新狀態
+PubSub.publish('atguigu',{isFirst:false,isLoading:true})
+//search組件請求
+axios.get(`/api1/search/users?q=${keyWord}`).then(
+	response => {
+		//请求成功后通知List更新状态
+		PubSub.publish('atguigu',{isLoading:false,users:response.data.items})
+	},
+	error => {
+		//请求失败后通知App更新状态
+		PubSub.publish('atguigu',{isLoading:false,err:error.message})
+	})
+
+//list組件訂閱
+componentDidMount(){
+	this.token = PubSub.subscribe('atguigu',(_,stateObj)=>{
+		this.setState(stateObj)
+	})
+}
+componentWillUnmount(){
+	PubSub.unsubscribe(this.token)
+}
+//list更新組件
+render() {
+const {users,isFirst,isLoading,err} = this.state
+return (
+	<div className="row">
+		{
+		isFirst ? <h2>歡迎營使用</h2> :
+		isLoading ? <h2>Loading......</h2> :
+		err ? <h2 style={{color:'red'}}>{err}</h2> :
+				users.map((userObj)=>{
+					return (
+						<div key={userObj.id} className="card">
+							<a rel="noreferrer" href={userObj.html_url} target="_blank">
+								<img alt="head_portrait" src={userObj.avatar_url} style={{width:'100px'}}/>
+							</a>
+							<p className="card-text">{userObj.login}</p>
+						</div>
+					)
+				})
+			}
+		</div>
+	)}
+
+

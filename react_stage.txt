@@ -88,3 +88,68 @@ return (
 	)}
 
 
+第7:
+由於jQuery或是axios都是對xhr的封裝(xhr就是難用) 因此，需要安裝jQuery或axios。axios是Promise風格 XHR不符合關注分離原則(separation of concerns)
+fetch不是對xhr的封裝。(fetch是內建也有Promise風格) 但fetch也有缺點，以後再說
+
+search = async()=>{
+	PubSub.publish('atguigu',{isFirst:false,isLoading:true})
+	//发送网络请求---使用fetch发送（优化）
+	try {
+		const response= await fetch(`/api1/search/users2?q=${keyWord}`)
+		const data = await response.json()
+		PubSub.publish('atguigu',{isLoading:false,users:data.items})
+	} catch (error) {
+		console.log('请求出错',error);
+		PubSub.publish('atguigu',{isLoading:false,err:error.message})
+	}
+}
+
+第8:
+{/* 在React中靠路由實現切換组件 */}
+<div className="col-xs-2 col-xs-offset-2">
+	<div className="list-group">
+		<Link className="list-group-item" to="/about">About</Link>
+		<Link className="list-group-item" to="/home">Home</Link>
+	</div>
+</div>
+<div className="col-xs-6">
+	<div className="panel">
+		<div className="panel-body">
+			<Routes>
+				<Route path="/about" element={<About />}/>
+				<Route path="/home" element={<Home />}/>
+			</Routes>
+		</div>
+	</div>
+</div>
+當點集Link的/about時，會使用這個標籤<Route path="/about" element={<About />}/>，
+而<Route path="/home" element={<Home />}/>會隱藏起來
+
+第9、10點 NavLink包裝
+而在App.js中
+<div className="list-group">
+	{/* 標籤體內容About、Home會寫成children: About、children: Home */}
+	<MyNavLink to="/about" >About</MyNavLink>
+	<MyNavLink to="/home" >Home</MyNavLink>
+</div>
+在MyNavLink中
+export default class MyNavLink extends Component {
+	render() {
+		console.log(this.props);
+		return (
+			<NavLink style={({ isActive }) => {	return {
+					fontWeight: isActive ? "bold" : "",
+					color: isActive ? "white" : "black",
+				};
+			}} className="list-group-item" {...this.props}>
+				{/* {this.props.children} */}
+			</NavLink>
+		)
+	}
+
+使用NavLink是因為，可以在收到{...this.props}中的 to="/about"後，直接執行路由到ip:port/about的位置
+如果在MyNavLink中 沒有改標籤體，則會沿用App.js中的標籤體<MyNavLink to="/about" >About</MyNavLink>
+另外，this.props.children是從App.js中傳到MyNavLink的標籤體
+
+

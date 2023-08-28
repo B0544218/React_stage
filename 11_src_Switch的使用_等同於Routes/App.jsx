@@ -4,7 +4,6 @@ import Home from './pages/Home' //Home是路由组件
 import About from './pages/About' //About是路由组件
 import Header from './components/Header' //Header是一般组件
 import MyNavLink from './components/MyNavLink'
-import Test from './pages/Test'
 
 export default class App extends Component {
 	render() {
@@ -36,7 +35,6 @@ export default class App extends Component {
 								<Routes>
 									<Route path="/about" element={<About/>}/>
 									<Route path="/home" element={<Home/>}/>
-									<Route path="/home" element={<Test/>}/>
 								</Routes>
 							</div>
 						</div>

@@ -10,12 +10,15 @@ export default class App extends Component {
 		return (
 			<div>
 				<div className="row">
-					<div className="col-xs-offset-2 col-xs-8">
+					{/* <div className="col-xs-offset-2 col-xs-8"> */}
+					{/* 假設使用boostrap min */}
+					<div className="offset-2 col-8">
 						<Header/>
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-xs-2 col-xs-offset-2">
+					{/* <div className="col-xs-2 col-xs-offset-2"> */}
+					<div className="col-2 offset-2"> 
 						<div className="list-group">
 
 							{/* 原生html中，靠<a>跳转不同的页面 */}
@@ -27,7 +30,8 @@ export default class App extends Component {
 							<MyNavLink to="/home/a/b">Home</MyNavLink>
 						</div>
 					</div>
-					<div className="col-xs-6">
+					{/* <div className="col-xs-6"> */}
+					<div className="col-6">
 						<div className="panel">
 							<div className="panel-body">
 								{/* 注册路由 */}

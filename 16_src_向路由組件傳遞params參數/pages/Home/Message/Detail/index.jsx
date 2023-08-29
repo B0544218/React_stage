@@ -10,6 +10,7 @@ function Det () {
 	// 接收params参数，useParams()不能寫在class compnent中
 	const {id, title} = useParams();
 	console.log('id: ', id)
+	// 只會回傳一次值(參數detailObj)，且是第一次為 true 的值。
 	const findDetailsData = DetailData.find((detailObj)=>{
 		return detailObj.id === id
 	})

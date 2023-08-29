@@ -10,12 +10,15 @@ export default class App extends Component {
 		return (
 			<div>
 				<div className="row">
-					<div className="col-xs-offset-2 col-xs-8">
+					{/* <div className="col-xs-offset-2 col-xs-8"> */}
+					{/* 假設使用boostrap min */}
+					<div className="offset-2 col-8">
 						<Header/>
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-xs-2 col-xs-offset-2">
+					{/* <div className="col-xs-2 col-xs-offset-2"> */}
+					<div className="col-2 offset-2"> 
 						<div className="list-group">
 
 							{/* 原生html中，靠<a>跳转不同的页面 */}
@@ -24,17 +27,17 @@ export default class App extends Component {
 
 							{/* 在React中靠路由链接实现切换组件--编写路由链接 */}
 							<MyNavLink to="/about">About</MyNavLink>
-							<MyNavLink to="/home">Home</MyNavLink>
+							<MyNavLink to="/home/a/b">Home</MyNavLink>
 						</div>
 					</div>
-					<div className="col-xs-6">
+					{/* <div className="col-xs-6"> */}
+					<div className="col-6">
 						<div className="panel">
 							<div className="panel-body">
-								{/* 注册路由，Switch(等同於Routes)過去會把url對所有Route的path都配一次)，
-								這會造成嚴重效率低，因此需要靠Swich來改善。。現在Routes代替了Switch */}
+								{/* 注册路由 */}
 								<Routes>
-									<Route path="/about" element={<About/>}/>
-									<Route path="/home" element={<Home/>}/>
+									<Route exact="true" path="/about" element={<About />}/>
+									<Route exact="true" path="/home" element={<Home />}/>
 								</Routes>
 							</div>
 						</div>

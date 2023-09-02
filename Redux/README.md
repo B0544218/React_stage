@@ -1,3 +1,5 @@
+![img](https://github.com/B0544218/React_stage/blob/main/Redux/redux%E5%8E%9F%E7%90%86%E5%9B%BE.png)
+
 ## 1.求和案例_redux精简版
 		(1).去除Count组件自身的状态
 		(2).src下建立:
